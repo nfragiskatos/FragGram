@@ -15,10 +15,11 @@ buildscript {
         version_junit = "4.12"
         version_test_ext_junit = "1.1.1"
         version_espresso_core = "3.2.0"
-
-        // unused for now.
         version_legacy_support = "1.0.0"
         version_lifecycle_viewmodel_ktx = "2.2.0"
+
+        // unused for now.
+
         version_google_services = "4.3.3"
         version_firebase_analytics = "17.2.2"
         version_firebase_auth = "19.3.1"

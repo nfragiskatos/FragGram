@@ -44,6 +44,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation_fragment_ktx"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation_ui_ktx"
+    implementation "androidx.legacy:legacy-support-v4:$version_legacy_support"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_viewmodel_ktx"
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:junit:$version_test_ext_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
