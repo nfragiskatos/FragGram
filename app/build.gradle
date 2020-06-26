@@ -49,5 +49,6 @@ dependencies {
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:junit:$version_test_ext_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
+    implementation "de.hdodenhof:circleimageview:$version_circle_image_view"
 
 }

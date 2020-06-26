@@ -17,6 +17,7 @@ buildscript {
         version_espresso_core = "3.2.0"
         version_legacy_support = "1.0.0"
         version_lifecycle_viewmodel_ktx = "2.2.0"
+        version_circle_image_view = "3.1.0"
 
         // unused for now.
 
@@ -25,7 +26,6 @@ buildscript {
         version_firebase_auth = "19.3.1"
         version_firebase_storage = "19.1.1"
         version_firebase_database = "19.3.0"
-        version_circle_image_view = "3.1.0"
         version_picasso = "2.71828"
         version_recyclerview = "1.0.0"
     }
