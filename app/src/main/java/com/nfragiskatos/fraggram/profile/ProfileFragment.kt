@@ -1,32 +1,43 @@
 package com.nfragiskatos.fraggram.profile
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.nfragiskatos.fraggram.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.nfragiskatos.fraggram.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
+
+    private val TAG = "ProfileFragment"
 
     companion object {
         fun newInstance() = ProfileFragment()
     }
 
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by lazy {
+        ViewModelProvider(this).get(ProfileViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-        // TODO: Use the ViewModel
+        val binding = FragmentProfileBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        viewModel.navigateToEditProfileActivity.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                Log.d(TAG, "CLICKED EDIT PROFILE")
+            }
+        })
+
+        return binding.root
     }
 
 }
