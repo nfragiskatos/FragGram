@@ -37,12 +37,11 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />
-
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="15dp"
-                    android:hint="Search..."
+                    android:hint="@string/search_text_hint"
                     android:textColor="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
