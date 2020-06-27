@@ -1,13 +1,14 @@
 package com.nfragiskatos.fraggram.profile
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.nfragiskatos.fraggram.accountsettings.AccountSettingsActivity
 import com.nfragiskatos.fraggram.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -33,7 +34,7 @@ class ProfileFragment : Fragment() {
 
         viewModel.navigateToEditProfileActivity.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
-                Log.d(TAG, "CLICKED EDIT PROFILE")
+                startActivity(Intent(context, AccountSettingsActivity::class.java))
             }
         })
 
