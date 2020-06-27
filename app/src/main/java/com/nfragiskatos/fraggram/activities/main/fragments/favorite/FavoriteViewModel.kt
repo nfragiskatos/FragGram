@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.favorite
+package com.nfragiskatos.fraggram.activities.main.fragments.favorite
 
 import androidx.lifecycle.ViewModel
 

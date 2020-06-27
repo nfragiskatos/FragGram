@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.search
+package com.nfragiskatos.fraggram.activities.main.fragments.search
 
 import androidx.lifecycle.ViewModel
 

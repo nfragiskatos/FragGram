@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.profile
+package com.nfragiskatos.fraggram.activities.main.fragments.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

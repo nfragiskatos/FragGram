@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.home
+package com.nfragiskatos.fraggram.activities.main.fragments.home
 
 import androidx.lifecycle.ViewModel
 

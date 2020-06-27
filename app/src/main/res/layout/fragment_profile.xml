@@ -7,13 +7,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.nfragiskatos.fraggram.profile.ProfileViewModel" />
+            type="com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".profile.ProfileFragment">
+        tools:context=".activities.main.fragments.profile.ProfileFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout_profile"

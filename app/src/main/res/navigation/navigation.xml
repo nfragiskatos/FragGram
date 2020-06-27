@@ -7,35 +7,35 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.nfragiskatos.fraggram.home.HomeFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home"
         />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.nfragiskatos.fraggram.search.SearchFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.search.SearchFragment"
         android:label="Search"
         tools:layout="@layout/fragment_search"
         />
 
     <fragment
         android:id="@+id/navigation_add"
-        android:name="com.nfragiskatos.fraggram.addpost.AddPostFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.addpost.AddPostFragment"
         android:label="Add Post"
         tools:layout="@layout/fragment_add_post"
         />
 
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="com.nfragiskatos.fraggram.favorite.FavoriteFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.favorite.FavoriteFragment"
         android:label="Favorite"
         tools:layout="@layout/fragment_favorite"
         />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.nfragiskatos.fraggram.profile.ProfileFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile"
         />

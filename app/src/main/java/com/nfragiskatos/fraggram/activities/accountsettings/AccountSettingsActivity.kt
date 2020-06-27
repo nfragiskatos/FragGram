@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.accountsettings
+package com.nfragiskatos.fraggram.activities.accountsettings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.nfragiskatos.fraggram.addpost
+package com.nfragiskatos.fraggram.activities.main.fragments.addpost
 
 import androidx.lifecycle.ViewModel
 
