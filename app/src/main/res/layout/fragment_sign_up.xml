@@ -6,30 +6,63 @@
     <data>
         <variable
             name="viewModel"
-            type="com.nfragiskatos.fraggram.activities.main.fragments.signin.SignInViewModel" />
+            type="com.nfragiskatos.fraggram.activities.main.fragments.signup.SignUpViewModel" />
     </data>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back_ui"
-        tools:context=".activities.main.fragments.signin.SignInFragment">
+        tools:context=".activities.main.fragments.signup.SignUpFragment">
 
         <ImageView
-            android:id="@+id/imageview_logo_sign_in"
+            android:id="@+id/imageview_logo_sign_up"
             android:layout_width="160dp"
             android:layout_height="90dp"
             android:src="@drawable/instagram"
             android:tint="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/edittext_email_sign_in"
+            app:layout_constraintBottom_toTopOf="@+id/edittext_full_name_sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <EditText
-            android:id="@+id/edittext_email_sign_in"
+            android:id="@+id/edittext_full_name_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/inputs_background"
+            android:hint="Full Name"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/edittext_username_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_logo_sign_up" />
+
+        <EditText
+            android:id="@+id/edittext_username_sign_up"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/inputs_background"
+            android:hint="Username"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/edittext_email_sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_full_name_sign_up" />
+
+        <EditText
+            android:id="@+id/edittext_email_sign_up"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
@@ -40,13 +73,13 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/edittext_password_sign_in"
+            app:layout_constraintBottom_toTopOf="@+id/edittext_password_sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_logo_sign_in" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_username_sign_up" />
 
         <EditText
-            android:id="@+id/edittext_password_sign_in"
+            android:id="@+id/edittext_password_sign_up"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
@@ -57,44 +90,43 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            app:layout_constraintBottom_toTopOf="@id/button_sign_in_sign_in"
+            app:layout_constraintBottom_toTopOf="@id/button_sign_up_sign_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edittext_email_sign_in" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_email_sign_up" />
 
         <Button
-            android:id="@+id/button_sign_in_sign_in"
+            android:id="@+id/button_sign_up_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@android:color/white"
-            android:text="Sign In"
+            android:text="Sign Up"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/button_sign_up_sign_in"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_password_sign_in" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_password_sign_up" />
 
         <Button
-            android:id="@+id/button_sign_up_sign_in"
+            android:id="@+id/button_sign_in_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="8dp"
             android:background="@color/colorPrimary"
-            android:text="Need New Account? Sign Up"
+            android:onClick="@{() -> viewModel.displaySignInFragment()}"
+            android:text="Already have an account? Sign In"
             android:textAllCaps="false"
-            android:onClick="@{() -> viewModel.displaySignUpFragment()}"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.nfragiskatos.fraggram.R
+import com.nfragiskatos.fraggram.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
 
@@ -14,19 +18,26 @@ class SignInFragment : Fragment() {
         fun newInstance() = SignInFragment()
     }
 
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel: SignInViewModel by lazy {
+        ViewModelProvider(this).get(SignInViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_sign_in, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+        val binding = FragmentSignInBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
+        viewModel.navigateToSignUpFragment.observe(viewLifecycleOwner, Observer {navigate ->
+            if (navigate) {
+                this.findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
+                viewModel.displaySignUpFragmentComplete()
+            }
+        })
+
+        return binding.root
+    }
 }

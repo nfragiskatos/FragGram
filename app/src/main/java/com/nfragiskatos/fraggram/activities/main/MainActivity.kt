@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-                R.id.accountSettingsFragment -> {
+                R.id.accountSettingsFragment, R.id.signInFragment, R.id.signUpFragment -> {
                     navView.visibility = View.GONE
                 } else -> navView.visibility = View.VISIBLE
             }
