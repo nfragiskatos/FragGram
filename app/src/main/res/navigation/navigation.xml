@@ -38,6 +38,15 @@
         android:name="com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile"
-        />
+        >
+        <action
+            android:id="@+id/action_navigation_profile_to_accountSettingsFragment"
+            app:destination="@id/accountSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountSettingsFragment"
+        android:name="com.nfragiskatos.fraggram.activities.main.fragments.accountsettings.AccountSettingsFragment"
+        android:label="fragment_account_settings"
+        tools:layout="@layout/fragment_account_settings" />
 
 </navigation>
