@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -54,6 +55,15 @@ dependencies {
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:junit:$version_test_ext_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"
+
+    // Circle Image View
     implementation "de.hdodenhof:circleimageview:$version_circle_image_view"
+
+
+    // Firebase
+    implementation "com.google.firebase:firebase-analytics:$version_firebase_analytics"
+    implementation "com.google.firebase:firebase-auth-ktx:$version_firebase_auth"
+    implementation "com.google.firebase:firebase-storage-ktx:$version_firebase_storage"
+    implementation "com.google.firebase:firebase-database-ktx:$version_firebase_database"
 
 }
