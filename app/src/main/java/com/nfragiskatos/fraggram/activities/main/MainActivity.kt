@@ -1,6 +1,7 @@
 package com.nfragiskatos.fraggram.activities.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,6 +25,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_profile
             )
         )
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.accountSettingsFragment -> {
+                    navView.visibility = View.GONE
+                } else -> navView.visibility = View.VISIBLE
+            }
+        }
         navView.setupWithNavController(navController)
     }
 }
