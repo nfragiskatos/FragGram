@@ -1,6 +1,5 @@
 package com.nfragiskatos.fraggram.repositories
 
-import android.util.Log
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -11,6 +10,12 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 object FirebaseRepository {
+
+    suspend fun performLogIn(email: String, password: String): AuthResult? {
+        return withContext(Dispatchers.IO) {
+            return@withContext Firebase.auth.signInWithEmailAndPassword(email, password).await()
+        }
+    }
 
     suspend fun performSignUp(email: String, password: String): AuthResult? {
         return withContext(Dispatchers.IO) {
