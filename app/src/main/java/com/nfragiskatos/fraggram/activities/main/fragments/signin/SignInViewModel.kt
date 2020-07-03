@@ -3,13 +3,11 @@ package com.nfragiskatos.fraggram.activities.main.fragments.signin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.nfragiskatos.fraggram.activities.main.fragments.signup.SignUpStatus
 import com.nfragiskatos.fraggram.repositories.FirebaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.coroutines.coroutineContext
 
 enum class SignInStatus { LOADING, ERROR, DONE }
 
