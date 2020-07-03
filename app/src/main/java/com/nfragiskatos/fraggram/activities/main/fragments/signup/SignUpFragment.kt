@@ -65,6 +65,13 @@ class SignUpFragment : Fragment() {
             }
         })
 
+        viewModel.navigateToHomeFragment.observe(viewLifecycleOwner, Observer {navigate ->
+            if (navigate) {
+                findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToNavigationHome())
+                viewModel.displayHomeFragmentComplete()
+            }
+        })
+
         return binding.root
     }
 
