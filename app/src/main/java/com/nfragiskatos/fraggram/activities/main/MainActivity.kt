@@ -7,6 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.nfragiskatos.fraggram.R
 
 class MainActivity : AppCompatActivity() {
@@ -26,11 +28,19 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        // If user is signed in, start at home screen, else start at log in screen.
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate(R.navigation.navigation)
+        graph.startDestination =
+            if (Firebase.auth.currentUser == null) R.id.signInFragment else R.id.navigation_home
+        navController.graph = graph
+
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.accountSettingsFragment, R.id.signInFragment, R.id.signUpFragment -> {
                     navView.visibility = View.GONE
-                } else -> navView.visibility = View.VISIBLE
+                }
+                else -> navView.visibility = View.VISIBLE
             }
         }
         navView.setupWithNavController(navController)
