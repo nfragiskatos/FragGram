@@ -1,32 +1,41 @@
 package com.nfragiskatos.fraggram.activities.main.fragments.search
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.nfragiskatos.fraggram.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.nfragiskatos.fraggram.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
+
+    private val TAG = "SearchFragment"
 
     companion object {
         fun newInstance() = SearchFragment()
     }
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by lazy {
+        ViewModelProvider(this).get(SearchViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+        val binding = FragmentSearchBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.recyclerViewSearch.adapter =
+            SearchListAdapter(SearchListAdapter.OnFollowClickListener {
+                Log.d(TAG, "username: ${it.username}\nfull name: ${it.fullName}")
+            })
 
+        viewModel.initMockData()
+
+        return binding.root
+    }
 }
