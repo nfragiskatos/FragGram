@@ -31,6 +31,23 @@ object FirebaseRepository {
         }
     }
 
+    suspend fun followUser(userToFollow: User) {
+        withContext(Dispatchers.IO) {
+            val uid = Firebase.auth.uid
+            uid?.let {
+                val followingRef =
+                    Firebase.database.getReference("follow/$uid/following/${userToFollow.uid}")
+                        .push()
+                val followersRef =
+                    Firebase.database.getReference("follow/${userToFollow.uid}/followers/$uid")
+                        .push()
+
+                followersRef.setValue(true).await()
+                followingRef.setValue(true).await()
+            }
+        }
+    }
+
     private fun validatePath(nodePath: String): String {
         return if (nodePath[nodePath.lastIndex] == '/') nodePath else "$nodePath/"
     }
