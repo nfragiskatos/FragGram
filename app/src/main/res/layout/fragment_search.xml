@@ -48,10 +48,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <EditText
+                        android:id="@+id/edittext_search_term_search"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="15dp"
                         android:hint="@string/search_text_hint"
+                        android:text="@={viewModel.searchTerm}"
                         android:textColor="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -66,9 +68,9 @@
             android:id="@+id/recycler_view_search"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar_layout_search"
             app:userSearchData="@{viewModel.users}" />
