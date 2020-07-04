@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.ListViewUserItemBinding
+import com.squareup.picasso.Picasso
 
 class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener) :
     ListAdapter<User, SearchListAdapter.SearchItemViewHolder>(DiffCallback) {
@@ -29,6 +30,11 @@ class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener
             binding.buttonFollowUserItem.setOnClickListener {
                 onFollowClickListener.onClick(user)
             }
+            if (user.profileImageUrl != null && user.profileImageUrl.isNotEmpty()) {
+                Picasso.get().load(user.profileImageUrl)
+                    .into(binding.circleimageviewProfileUserItem)
+            }
+
         }
 
         companion object {
