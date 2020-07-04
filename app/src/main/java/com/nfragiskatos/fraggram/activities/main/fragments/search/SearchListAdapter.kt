@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nfragiskatos.fraggram.R
 import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.ListViewUserItemBinding
 import com.squareup.picasso.Picasso
@@ -29,10 +30,17 @@ class SearchListAdapter(private val onFollowClickListener: SearchClickListener, 
             binding.textviewUsernameUserItem.text = user.username_display
             binding.textviewFullNameUserItem.text = user.fullName_display
             binding.buttonFollowUserItem.setOnClickListener {
-                if ((it as Button).text.toString() == "Follow") {
-                    (it as Button).text = "Unfollow"
+                val button = it as Button
+                if (button.text.toString() == "Follow") {
+                    button.text = "Unfollow"
+                    button.background = itemView.context.resources.getDrawable(R.drawable.button_background_follow)
+//                    button.setBackgroundColor(itemView.context.resources.getColor(R.color.colorPrimary))
+                    button.setTextColor(itemView.context.resources.getColor(android.R.color.white))
                     onFollowClickListener.onClick(user)
                 } else {
+                    button.text = "Follow"
+                    button.background = itemView.context.resources.getDrawable(R.drawable.button_background)
+                    button.setTextColor(itemView.context.resources.getColor(android.R.color.black))
                     onUnFollowClickListener.onClick(user)
                 }
             }
