@@ -25,8 +25,8 @@ class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener
     class SearchItemViewHolder private constructor(private val binding: ListViewUserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User, onFollowClickListener: OnFollowClickListener) {
-            binding.textviewUsernameUserItem.text = user.username
-            binding.textviewFullNameUserItem.text = user.fullName
+            binding.textviewUsernameUserItem.text = user.username_display
+            binding.textviewFullNameUserItem.text = user.fullName_display
             binding.buttonFollowUserItem.setOnClickListener {
                 onFollowClickListener.onClick(user)
             }

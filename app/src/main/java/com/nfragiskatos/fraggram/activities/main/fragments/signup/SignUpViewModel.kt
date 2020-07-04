@@ -82,7 +82,9 @@ class SignUpViewModel : ViewModel() {
                 val user = User(
                     uid,
                     fullName,
+                    fullName.toLowerCase(),
                     username,
+                    username.toLowerCase(),
                     email,
                     "Hey this is a default bio.",
                     "https://firebasestorage.googleapis.com/v0/b/fraggram-9d41c.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=be3b8d46-2bdb-48e5-8382-41c3f71995a9"
