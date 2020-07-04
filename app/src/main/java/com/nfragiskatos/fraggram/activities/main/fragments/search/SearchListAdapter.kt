@@ -2,6 +2,7 @@ package com.nfragiskatos.fraggram.activities.main.fragments.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,7 @@ import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.ListViewUserItemBinding
 import com.squareup.picasso.Picasso
 
-class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener) :
+class SearchListAdapter(private val onFollowClickListener: SearchClickListener, private val onUnFollowClickListener: SearchClickListener) :
     ListAdapter<User, SearchListAdapter.SearchItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
@@ -18,17 +19,22 @@ class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, onFollowClickListener)
+        holder.bind(item, onFollowClickListener, onUnFollowClickListener)
     }
 
 
     class SearchItemViewHolder private constructor(private val binding: ListViewUserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User, onFollowClickListener: OnFollowClickListener) {
+        fun bind(user: User, onFollowClickListener: SearchClickListener, onUnFollowClickListener: SearchClickListener) {
             binding.textviewUsernameUserItem.text = user.username_display
             binding.textviewFullNameUserItem.text = user.fullName_display
             binding.buttonFollowUserItem.setOnClickListener {
-                onFollowClickListener.onClick(user)
+                if ((it as Button).text.toString() == "Follow") {
+                    (it as Button).text = "Unfollow"
+                    onFollowClickListener.onClick(user)
+                } else {
+                    onUnFollowClickListener.onClick(user)
+                }
             }
             if (user.profileImageUrl != null && user.profileImageUrl.isNotEmpty()) {
                 Picasso.get().load(user.profileImageUrl)
@@ -49,7 +55,7 @@ class SearchListAdapter(private val onFollowClickListener: OnFollowClickListener
         }
     }
 
-    class OnFollowClickListener(val clickListener: (user: User) -> Unit) {
+    class SearchClickListener(val clickListener: (user: User) -> Unit) {
         fun onClick(user: User) = clickListener(user)
     }
 
