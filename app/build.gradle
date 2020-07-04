@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -68,4 +69,9 @@ dependencies {
     implementation "com.google.firebase:firebase-storage-ktx:$version_firebase_storage"
     implementation "com.google.firebase:firebase-database-ktx:$version_firebase_database"
 
+    // Recycler View dependency
+    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
+
+    // Picasso - Image downloading and caching
+    implementation "com.squareup.picasso:picasso:$version_picasso"
 }

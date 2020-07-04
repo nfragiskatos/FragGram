@@ -24,8 +24,6 @@ buildscript {
         version_firebase_auth = "19.3.1"
         version_firebase_storage = "19.1.1"
         version_firebase_database = "19.3.0"
-
-        // unused for now.
         version_picasso = "2.71828"
         version_recyclerview = "1.0.0"
     }
