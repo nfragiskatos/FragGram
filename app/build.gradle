@@ -19,6 +19,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -74,4 +75,7 @@ dependencies {
 
     // Picasso - Image downloading and caching
     implementation "com.squareup.picasso:picasso:$version_picasso"
+
+    // For 64k method limitation
+    implementation 'com.android.support:multidex:1.0.3'
 }
