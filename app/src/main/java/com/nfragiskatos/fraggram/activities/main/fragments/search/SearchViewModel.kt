@@ -54,6 +54,8 @@ class SearchViewModel : ViewModel() {
     }
 
     fun unFollowUser(userToUnFollow: User) {
-
+        coroutineScope.launch {
+            FirebaseRepository.unFollowUser(userToUnFollow)
+        }
     }
 }

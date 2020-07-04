@@ -1,5 +1,6 @@
 package com.nfragiskatos.fraggram.repositories
 
+import android.util.Log
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -44,6 +45,21 @@ object FirebaseRepository {
 
                 followersRef.setValue(true).await()
                 followingRef.setValue(true).await()
+            }
+        }
+    }
+
+    suspend fun unFollowUser(userToFollow: User) {
+        withContext(Dispatchers.IO) {
+            val uid = Firebase.auth.uid
+            uid?.let {
+                val followingRef =
+                    Firebase.database.getReference("follow/$uid/following/${userToFollow.uid}")
+                val followersRef =
+                    Firebase.database.getReference("follow/${userToFollow.uid}/followers/$uid")
+
+                followersRef.setValue(null).await()
+                followingRef.setValue(null).await()
             }
         }
     }
