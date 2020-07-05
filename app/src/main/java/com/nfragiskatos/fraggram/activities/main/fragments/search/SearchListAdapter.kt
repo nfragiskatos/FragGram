@@ -38,10 +38,8 @@ class SearchListAdapter(private val onFollowClickListener: SearchClickListener, 
             binding.buttonFollowUserItem.setOnClickListener {
                 val followBtn = it as Button
                 if (followBtn.text.toString() == "Follow") {
-//                    setFollowBtn(true, followBtn)
                     onFollowClickListener.onClick(user)
                 } else {
-//                    setFollowBtn(false, followBtn)
                     onUnFollowClickListener.onClick(user)
                 }
             }
