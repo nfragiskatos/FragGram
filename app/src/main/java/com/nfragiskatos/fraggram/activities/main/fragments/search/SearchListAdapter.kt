@@ -6,6 +6,12 @@ import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.nfragiskatos.fraggram.R
 import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.ListViewUserItemBinding
@@ -30,23 +36,58 @@ class SearchListAdapter(private val onFollowClickListener: SearchClickListener, 
             binding.textviewUsernameUserItem.text = user.username_display
             binding.textviewFullNameUserItem.text = user.fullName_display
             binding.buttonFollowUserItem.setOnClickListener {
-                val button = it as Button
-                if (button.text.toString() == "Follow") {
-                    button.text = "Unfollow"
-                    button.background = itemView.context.resources.getDrawable(R.drawable.button_background_follow)
-//                    button.setBackgroundColor(itemView.context.resources.getColor(R.color.colorPrimary))
-                    button.setTextColor(itemView.context.resources.getColor(android.R.color.white))
+                val followBtn = it as Button
+                if (followBtn.text.toString() == "Follow") {
+//                    setFollowBtn(true, followBtn)
                     onFollowClickListener.onClick(user)
                 } else {
-                    button.text = "Follow"
-                    button.background = itemView.context.resources.getDrawable(R.drawable.button_background)
-                    button.setTextColor(itemView.context.resources.getColor(android.R.color.black))
+//                    setFollowBtn(false, followBtn)
                     onUnFollowClickListener.onClick(user)
                 }
             }
+
+            checkIfUserFollowing(user.uid, binding.buttonFollowUserItem)
+
+
             if (user.profileImageUrl != null && user.profileImageUrl.isNotEmpty()) {
                 Picasso.get().load(user.profileImageUrl)
                     .into(binding.circleimageviewProfileUserItem)
+            }
+
+        }
+
+        private fun checkIfUserFollowing(userToFollowUid: String, followBtn: Button) {
+            val uid = Firebase.auth.uid
+            uid?.let {
+                val followingRef =
+                    Firebase.database.getReference("follow/$uid/following/")
+
+                followingRef.addValueEventListener(object: ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.child(userToFollowUid).exists()) {
+                            setFollowBtn(true, followBtn)
+                        } else {
+                            setFollowBtn(false, followBtn)
+                        }
+                    }
+
+                })
+
+            }
+        }
+
+        private fun setFollowBtn(isFollowing: Boolean, followBtn: Button) {
+            if (isFollowing) {
+                followBtn.text = "Unfollow"
+                followBtn.background = itemView.context.resources.getDrawable(R.drawable.button_background_follow)
+                followBtn.setTextColor(itemView.context.resources.getColor(android.R.color.white))
+            } else {
+                followBtn.text = "Follow"
+                followBtn.background = itemView.context.resources.getDrawable(R.drawable.button_background)
+                followBtn.setTextColor(itemView.context.resources.getColor(android.R.color.black))
             }
 
         }
