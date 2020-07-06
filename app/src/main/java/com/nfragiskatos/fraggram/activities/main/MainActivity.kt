@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
+        // Per
+        // https://stackoverflow.com/questions/59275009/fragmentcontainerview-using-findnavcontroller/59275182#59275182
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container_test) as NavHostFragment
         val navController = navHostFragment.navController
