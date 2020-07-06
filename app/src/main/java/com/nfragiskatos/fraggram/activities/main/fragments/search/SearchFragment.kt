@@ -1,5 +1,6 @@
 package com.nfragiskatos.fraggram.activities.main.fragments.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.nfragiskatos.fraggram.R
+import com.nfragiskatos.fraggram.activities.main.domain.User
+import com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragment
+import com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragmentDirections
 import com.nfragiskatos.fraggram.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
@@ -32,15 +42,13 @@ class SearchFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.recyclerViewSearch.adapter =
-            SearchListAdapter(SearchListAdapter.SearchClickListener { user ->
-                Log.d(TAG, "Following username: ${user.username_display}\nfull name: ${user.fullName_display}")
-                viewModel.followUser(user)
-            }, SearchListAdapter.SearchClickListener { user ->
-                Log.d(TAG, "Unfollowing username: ${user.username_display}\nfull name: ${user.fullName_display}")
-                viewModel.unFollowUser(user)
-            })
+            SearchListAdapter(
+                SearchListAdapter.SearchClickListener(this::onUserItemClick),
+                SearchListAdapter.SearchClickListener(this::onFollowClick),
+                SearchListAdapter.SearchClickListener(this::onUnFollowClick)
+            )
 
-        binding.edittextSearchTermSearch.addTextChangedListener(object: TextWatcher {
+        binding.edittextSearchTermSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -52,6 +60,46 @@ class SearchFragment : Fragment() {
             }
         })
 
+        viewModel.navigateToUserProfileFragment.observe(viewLifecycleOwner, Observer {user ->
+            if (user != null && context != null) {
+
+                // Works but no arguments
+//                val bnv = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+//                bnv?.selectedItemId = R.id.navigation_profile
+
+                val prefs = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)?.edit()
+                prefs?.putString("profileId", user.uid)
+                prefs?.apply()
+
+                val fragmentActivity = context as FragmentActivity
+                val beginTransaction = fragmentActivity.supportFragmentManager.beginTransaction()
+                beginTransaction.replace(R.id.fragment_container_test, ProfileFragment()).commit()
+                viewModel.displayUserProfileFragmentCompleted()
+                Log.d(TAG, "")
+            }
+        })
+
         return binding.root
+    }
+
+    private fun onUserItemClick(user: User) {
+        Log.d(TAG, "Navigating to ${user.fullName_display}'s profile")
+        viewModel.displayUserProfileFragment(user)
+    }
+
+    private fun onFollowClick(user: User) {
+        Log.d(
+            TAG,
+            "Following username: ${user.username_display}\nfull name: ${user.fullName_display}"
+        )
+        viewModel.followUser(user)
+    }
+
+    private fun onUnFollowClick(user: User) {
+        Log.d(
+            TAG,
+            "Unfollowing username: ${user.username_display}\nfull name: ${user.fullName_display}"
+        )
+        viewModel.unFollowUser(user)
     }
 }

@@ -23,6 +23,10 @@ class SearchViewModel : ViewModel() {
     val users: LiveData<MutableList<User>>
         get() = _users
 
+    private val _navigateToUserProfileFragment = MutableLiveData<User>()
+    val navigateToUserProfileFragment: LiveData<User>
+        get() = _navigateToUserProfileFragment
+
     private var viewModelJjob = Job()
     private val coroutineScope = CoroutineScope(viewModelJjob + Dispatchers.Main)
 
@@ -57,5 +61,13 @@ class SearchViewModel : ViewModel() {
         coroutineScope.launch {
             FirebaseRepository.unFollowUser(userToUnFollow)
         }
+    }
+
+    fun displayUserProfileFragment(user: User) {
+        _navigateToUserProfileFragment.value = user
+    }
+
+    fun displayUserProfileFragmentCompleted() {
+        _navigateToUserProfileFragment.value = null
     }
 }

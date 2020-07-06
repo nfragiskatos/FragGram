@@ -17,7 +17,7 @@ import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.ListViewUserItemBinding
 import com.squareup.picasso.Picasso
 
-class SearchListAdapter(private val onFollowClickListener: SearchClickListener, private val onUnFollowClickListener: SearchClickListener) :
+class SearchListAdapter(private val onUserClickListener: SearchClickListener, private val onFollowClickListener: SearchClickListener, private val onUnFollowClickListener: SearchClickListener) :
     ListAdapter<User, SearchListAdapter.SearchItemViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
@@ -26,6 +26,9 @@ class SearchListAdapter(private val onFollowClickListener: SearchClickListener, 
 
     override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
         val item = getItem(position)
+        holder.itemView.setOnClickListener {
+            onUserClickListener.onClick(item)
+        }
         holder.bind(item, onFollowClickListener, onUnFollowClickListener)
     }
 
