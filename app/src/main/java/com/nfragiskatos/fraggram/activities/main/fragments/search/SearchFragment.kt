@@ -9,16 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nfragiskatos.fraggram.R
 import com.nfragiskatos.fraggram.activities.main.domain.User
-import com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragment
-import com.nfragiskatos.fraggram.activities.main.fragments.profile.ProfileFragmentDirections
 import com.nfragiskatos.fraggram.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
@@ -60,22 +55,27 @@ class SearchFragment : Fragment() {
             }
         })
 
-        viewModel.navigateToUserProfileFragment.observe(viewLifecycleOwner, Observer {user ->
+        viewModel.navigateToUserProfileFragment.observe(viewLifecycleOwner, Observer { user ->
             if (user != null && context != null) {
 
-                // Works but no arguments
-//                val bnv = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
-//                bnv?.selectedItemId = R.id.navigation_profile
 
                 val prefs = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)?.edit()
                 prefs?.putString("profileId", user.uid)
                 prefs?.apply()
 
-                val fragmentActivity = context as FragmentActivity
-                val beginTransaction = fragmentActivity.supportFragmentManager.beginTransaction()
-                beginTransaction.replace(R.id.fragment_container_test, ProfileFragment()).commit()
-                viewModel.displayUserProfileFragmentCompleted()
-                Log.d(TAG, "")
+                // Navigating via the bottom navigation view
+                val bnv = activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+                bnv?.selectedItemId = R.id.navigation_profile
+
+                // An alternate method to navigate to the new fragment. Doesn't seem as clean, because
+                // we are bypassing the navigation component, and when the navigation is complete, the
+                // Search icon in the bottom navigation is still selected.
+                // Not sure what the benefits are to doing it this way.
+//                val fragmentActivity = context as FragmentActivity
+//                val beginTransaction = fragmentActivity.supportFragmentManager.beginTransaction()
+//                beginTransaction.replace(R.id.fragment_container_test, ProfileFragment()).commit()
+//                viewModel.displayUserProfileFragmentCompleted()
+//                Log.d(TAG, "")
             }
         })
 
