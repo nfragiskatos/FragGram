@@ -15,10 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.nfragiskatos.fraggram.R
-import com.nfragiskatos.fraggram.activities.main.domain.User
 import com.nfragiskatos.fraggram.databinding.FragmentProfileBinding
-import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
 
@@ -49,8 +46,12 @@ class ProfileFragment : Fragment() {
         val prefs = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
 
 
-        if (prefs != null) {
+        prefs?.let {
             profileId = prefs.getString("profileId", "none")!!
+            prefs.edit()?.let {
+                it.putString("profileId", Firebase.auth.uid)
+                it.apply()
+            }
         }
 
         if (profileId == "none") {
@@ -64,9 +65,7 @@ class ProfileFragment : Fragment() {
             setFollowAndFollowingBtnStatus(profileId)
         }
 
-        setFollowersField(profileId)
-        setFollowingField(profileId)
-        setUserInfoFields(profileId)
+        viewModel.initProfileInfo(profileId)
 
         viewModel.navigateToEditProfileActivity.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
@@ -77,31 +76,6 @@ class ProfileFragment : Fragment() {
         })
 
         return binding.root
-    }
-
-    private fun setUserInfoFields(profileId: String) {
-        Firebase.database.getReference("users/$profileId/")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.exists()) {
-                        val user = p0.getValue(User::class.java) ?: return
-                        binding.textviewProfileProfile.text = user.username_display
-                        binding.textviewFullNameProfile.text = user.fullName_display
-                        binding.textviewBioProfile.text = user.bio
-                        if (user.profileImageUrl != null && user.profileImageUrl.isNotEmpty()) {
-                            Picasso.get().load(user.profileImageUrl)
-                                .placeholder(R.drawable.ic_baseline_person_64)
-                                .into(binding.circleImageViewProfileImageProfile)
-                        }
-                    }
-                }
-
-            })
     }
 
     private fun setFollowAndFollowingBtnStatus(profileId: String) {
@@ -120,36 +94,6 @@ class ProfileFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun setFollowersField(profileId: String) {
-        Firebase.database.getReference("follow/${profileId}/followers/")
-            ?.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        binding.textviewTotalFollowersValueProfile.text = "${p0.childrenCount}"
-                    }
-                }
-
-            })
-
-    }
-
-    private fun setFollowingField(profileId: String) {
-        Firebase.database.getReference("follow/${profileId}/following/")
-            ?.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        binding.textviewTotalFollowingValueProfile.text = "${p0.childrenCount}"
-                    }
-                }
-            })
     }
 
     override fun onStop() {
