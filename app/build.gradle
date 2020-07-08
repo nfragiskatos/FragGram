@@ -78,4 +78,6 @@ dependencies {
 
     // For 64k method limitation
     implementation 'com.android.support:multidex:1.0.3'
+
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }
