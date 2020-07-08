@@ -28,10 +28,17 @@ class AccountSettingsFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.navigateToSingInFragment.observe(viewLifecycleOwner, Observer { navigate ->
+        viewModel.navigateToSignInFragment.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 findNavController().navigate(AccountSettingsFragmentDirections.actionAccountSettingsFragmentToSignInFragment())
                 viewModel.displaySignInFragmentComplete()
+            }
+        })
+
+        viewModel.navigateToProfileFragment.observe(viewLifecycleOwner, Observer {navigate ->
+            if (navigate) {
+                findNavController().popBackStack()
+                viewModel.displayProfileFragmentCompleted()
             }
         })
 
