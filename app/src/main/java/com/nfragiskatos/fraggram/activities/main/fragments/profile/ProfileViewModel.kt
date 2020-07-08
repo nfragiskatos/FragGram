@@ -9,8 +9,17 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nfragiskatos.fraggram.activities.main.domain.User
+import com.nfragiskatos.fraggram.repositories.FirebaseRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
+
+    private val _profileUid = MutableLiveData<String>()
+    val profileUid: LiveData<String>
+        get() = _profileUid
 
     private val _numFollowers = MutableLiveData<Long>()
     val numFollowers: LiveData<Long>
@@ -36,19 +45,24 @@ class ProfileViewModel : ViewModel() {
     val profilePhotoUri: LiveData<String>
         get() = _profilePhotoUri
 
-    private val _navigateToEditProfileActivity = MutableLiveData<Boolean>()
-    val navigateToEditProfileActivity: LiveData<Boolean>
-        get() = _navigateToEditProfileActivity
+    private val _navigateToEditProfileFragment = MutableLiveData<Boolean>()
+    val navigateToEditProfileFragment: LiveData<Boolean>
+        get() = _navigateToEditProfileFragment
 
-    fun displayEditProfileActivity() {
-        _navigateToEditProfileActivity.value = true
+
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    fun displayEditProfileFragment() {
+        _navigateToEditProfileFragment.value = true
     }
 
-    fun displayEditProfileActivityComplete() {
-        _navigateToEditProfileActivity.value = false
+    fun displayEditProfileFragmentComplete() {
+        _navigateToEditProfileFragment.value = false
     }
 
     fun initProfileInfo(profileUid: String) {
+        _profileUid.value = profileUid
         setUserInfoData(profileUid)
         setFollowersData(profileUid)
         setFollowingData(profileUid)
@@ -100,5 +114,22 @@ class ProfileViewModel : ViewModel() {
                     }
                 }
             })
+    }
+
+    fun followCurrentUser() {
+        coroutineScope.launch {
+            profileUid.value?.let {
+                FirebaseRepository.followUser(it)
+            }
+        }
+    }
+
+    fun unFollowCurrentUser() {
+        coroutineScope.launch {
+            profileUid.value?.let {
+                FirebaseRepository.unFollowUser(it)
+            }
+
+        }
     }
 }
