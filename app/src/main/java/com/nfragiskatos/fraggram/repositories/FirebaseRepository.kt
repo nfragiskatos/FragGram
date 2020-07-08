@@ -1,9 +1,11 @@
 package com.nfragiskatos.fraggram.repositories
 
+import android.net.Uri
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.nfragiskatos.fraggram.activities.main.domain.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -65,5 +67,28 @@ object FirebaseRepository {
 
     private fun validatePath(nodePath: String): String {
         return if (nodePath[nodePath.lastIndex] == '/') nodePath else "$nodePath/"
+    }
+
+    suspend fun uploadImageToStorage(uri: String, fileName: String) : Uri? {
+        return withContext(Dispatchers.IO) {
+            val ref = Firebase.storage.getReference("/images/$fileName")
+            ref.putFile(Uri.parse(uri)).await()
+            return@withContext ref.downloadUrl.await()
+        }
+    }
+
+    suspend fun updateUserInfo(fullName: String, username: String, bio: String, uri: String) {
+        val uid = Firebase.auth.uid ?: return
+        val reference = Firebase.database.getReference("/users/$uid")
+
+        val userMap = HashMap<String, Any>()
+        userMap["fullName_display"] = fullName
+        userMap["fullName_sort"] = fullName.toLowerCase()
+        userMap["username_display"] = username
+        userMap["username_sort"] = username.toLowerCase()
+        userMap["bio"] = bio
+        userMap["profileImageUrl"] = uri
+
+        reference.updateChildren(userMap).await()
     }
 }
