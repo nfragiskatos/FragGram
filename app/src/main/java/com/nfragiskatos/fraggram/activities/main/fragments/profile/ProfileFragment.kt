@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -61,19 +62,36 @@ class ProfileFragment : Fragment() {
         if (profileId == firebaseUser.uid) {
             binding.buttonEditProfileProfile.text = "Edit Profile"
         } else {
-            binding.buttonEditProfileProfile.text = "Follow"
             setFollowAndFollowingBtnStatus(profileId)
         }
 
         viewModel.initProfileInfo(profileId)
 
-        viewModel.navigateToEditProfileActivity.observe(viewLifecycleOwner, Observer { navigate ->
+        viewModel.navigateToEditProfileFragment.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 this.findNavController()
                     .navigate(ProfileFragmentDirections.actionNavigationProfileToAccountSettingsFragment())
-                viewModel.displayEditProfileActivityComplete()
+                viewModel.displayEditProfileFragmentComplete()
             }
         })
+
+        val buttonEditProfileProfile = binding.buttonEditProfileProfile
+        buttonEditProfileProfile.setOnClickListener {
+            val text = (it as Button).text.toString()
+
+            when {
+                text == "Edit Profile" -> {
+                    viewModel.displayEditProfileFragment()
+                }
+                text == "Following" -> {
+                    viewModel.unFollowCurrentUser()
+                }
+                text == "Follow" -> {
+                    // Follow user code
+                    viewModel.followCurrentUser()
+                }
+            }
+        }
 
         return binding.root
     }
