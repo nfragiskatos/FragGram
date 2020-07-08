@@ -163,7 +163,6 @@
             android:layout_height="28dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/button_background"
-            android:onClick="@{() -> viewModel.displayEditProfileActivity()}"
             android:text="@string/edit_profile"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="@id/circle_image_view_profile_image_profile"
