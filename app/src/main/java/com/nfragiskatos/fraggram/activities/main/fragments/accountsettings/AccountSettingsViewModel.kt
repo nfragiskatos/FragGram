@@ -10,6 +10,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nfragiskatos.fraggram.activities.main.domain.User
+import com.nfragiskatos.fraggram.repositories.FirebaseRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class AccountSettingsViewModel : ViewModel() {
 
@@ -20,7 +25,11 @@ class AccountSettingsViewModel : ViewModel() {
     val fullName = MutableLiveData<String>()
     val username = MutableLiveData<String>()
     val bio = MutableLiveData<String>()
-    val photoUri = MutableLiveData<String>()
+    private val _photoUri = MutableLiveData<String>()
+    val photoUri: LiveData<String>
+        get() = _photoUri
+    private var photoChanged: Boolean = false
+
     private lateinit var currentUser: User
 
     private val _navigateToSignInFragment = MutableLiveData<Boolean>()
@@ -30,6 +39,17 @@ class AccountSettingsViewModel : ViewModel() {
     private val _navigateToProfileFragment = MutableLiveData<Boolean>()
     val navigateToProfileFragment: LiveData<Boolean>
         get() = _navigateToProfileFragment
+
+    private val _notification = MutableLiveData<String>()
+    val notification: LiveData<String>
+        get() = _notification
+
+    private val _logMessage = MutableLiveData<String>()
+    val logMessage: LiveData<String>
+        get() = _logMessage
+
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     fun displaySignInFragment() {
         _navigateToSignInFragment.value = true
@@ -45,6 +65,11 @@ class AccountSettingsViewModel : ViewModel() {
 
     fun displayProfileFragmentCompleted() {
         _navigateToProfileFragment.value = false
+    }
+
+    fun updateProfileImageUri(uri: String) {
+        _photoUri.value = uri
+        photoChanged = true
     }
 
     fun signOutUser() {
@@ -66,7 +91,7 @@ class AccountSettingsViewModel : ViewModel() {
                             username.value = user.username_display
                             fullName.value = user.fullName_display
                             bio.value = user.bio
-                            photoUri.value = user.profileImageUrl
+                            _photoUri.value = user.profileImageUrl
                             currentUser = user
                         }
                     }
@@ -78,25 +103,27 @@ class AccountSettingsViewModel : ViewModel() {
         val fullName = this.fullName.value
         val username = this.username.value
         val bio = this.bio.value
+        val imageUri = this._photoUri.value
 
         if (fullName == null || username == null || bio == null) {
-//            _notification.value = "Please enter text for all fields."
+            _notification.value = "Please enter text for all fields."
             return
         }
 
-        if (fullName == null) return
+        coroutineScope.launch {
+            if (photoChanged && imageUri != null) {
 
-        val uid = Firebase.auth.uid ?: return
-        val reference = Firebase.database.getReference("/users/$uid")
+                val ext = imageUri.substring(imageUri.lastIndexOf(".") + 1)
+                val fileName = "${Firebase.auth.uid}_profile_image.$ext"
 
-        val userMap = HashMap<String, Any>()
-        userMap["fullName_display"] = fullName
-        userMap["fullName_sort"] = fullName.toLowerCase()
-        userMap["username_display"] = username
-        userMap["username_sort"] = username.toLowerCase()
-        userMap["bio"] = bio
-
-        reference.updateChildren(userMap)
-        displayProfileFragment()
+                val retUri = FirebaseRepository.uploadImageToStorage(imageUri, fileName)
+                retUri?.let {
+                    FirebaseRepository.updateUserInfo(fullName, username, bio, it.toString())
+                }
+            } else {
+                FirebaseRepository.updateUserInfo(fullName, username, bio, imageUri!!)
+            }
+            displayProfileFragment()
+        }
     }
 }
