@@ -2,12 +2,12 @@ package com.nfragiskatos.fraggram.activities.main.fragments.accountsettings
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nfragiskatos.fraggram.databinding.FragmentAccountSettingsBinding
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.android.synthetic.main.fragment_account_settings.*
 
 class AccountSettingsFragment : Fragment() {
 
@@ -46,7 +45,7 @@ class AccountSettingsFragment : Fragment() {
             }
         })
 
-        viewModel.navigateToProfileFragment.observe(viewLifecycleOwner, Observer {navigate ->
+        viewModel.navigateToProfileFragment.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 findNavController().popBackStack()
                 viewModel.displayProfileFragmentCompleted()
@@ -69,8 +68,33 @@ class AccountSettingsFragment : Fragment() {
             Log.d(TAG, it)
         })
 
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                AccountSettingsStatus.LOADING -> {
+                    binding.framelayoutProgressbarHolderAccountSettings.visibility = View.VISIBLE
+                    setBackgroundEnabled(false)
+                }
+
+                else -> {
+                    binding.framelayoutProgressbarHolderAccountSettings.visibility = View.INVISIBLE
+                    setBackgroundEnabled(true)
+                }
+            }
+        })
+
 
         return binding.root
+    }
+
+    private fun setBackgroundEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            activity?.window?.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -16,6 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+enum class AccountSettingsStatus { LOADING, ERROR, DONE }
+
 class AccountSettingsViewModel : ViewModel() {
 
     init {
@@ -47,6 +49,10 @@ class AccountSettingsViewModel : ViewModel() {
     private val _logMessage = MutableLiveData<String>()
     val logMessage: LiveData<String>
         get() = _logMessage
+
+    private val _status = MutableLiveData<AccountSettingsStatus>()
+    val status: LiveData<AccountSettingsStatus>
+        get() = _status
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -111,6 +117,7 @@ class AccountSettingsViewModel : ViewModel() {
         }
 
         coroutineScope.launch {
+            _status.value = AccountSettingsStatus.LOADING
             if (photoChanged && imageUri != null) {
 
                 val ext = imageUri.substring(imageUri.lastIndexOf(".") + 1)
@@ -123,6 +130,7 @@ class AccountSettingsViewModel : ViewModel() {
             } else {
                 FirebaseRepository.updateUserInfo(fullName, username, bio, imageUri!!)
             }
+            _status.value = AccountSettingsStatus.DONE
             displayProfileFragment()
         }
     }
