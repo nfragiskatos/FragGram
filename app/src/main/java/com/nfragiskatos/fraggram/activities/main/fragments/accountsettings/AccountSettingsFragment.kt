@@ -1,16 +1,25 @@
 package com.nfragiskatos.fraggram.activities.main.fragments.accountsettings
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nfragiskatos.fraggram.databinding.FragmentAccountSettingsBinding
+import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.android.synthetic.main.fragment_account_settings.*
 
 class AccountSettingsFragment : Fragment() {
+
+    private val TAG = "AccountSettingsFragment"
 
     companion object {
         fun newInstance() = AccountSettingsFragment()
@@ -20,11 +29,13 @@ class AccountSettingsFragment : Fragment() {
         ViewModelProvider(this).get(AccountSettingsViewModel::class.java)
     }
 
+    private lateinit var binding: FragmentAccountSettingsBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentAccountSettingsBinding.inflate(inflater)
+        binding = FragmentAccountSettingsBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -42,7 +53,35 @@ class AccountSettingsFragment : Fragment() {
             }
         })
 
+        binding.circleimageviewProfileImageAccountSettings.setOnClickListener {
+            context?.let {
+                CropImage.activity().setAspectRatio(1, 1)
+                    .start(it, this)
+            }
+        }
+
+        viewModel.notification.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT)
+                .show()
+        })
+
+        viewModel.logMessage.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, it)
+        })
+
 
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            viewModel.updateProfileImageUri(CropImage.getActivityResult(data).uri.toString())
+        } else {
+            Log.d("AccountSettingsFragment", "Failed to load cropped image")
+            Toast.makeText(context, "Failed to load cropped image", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 }
