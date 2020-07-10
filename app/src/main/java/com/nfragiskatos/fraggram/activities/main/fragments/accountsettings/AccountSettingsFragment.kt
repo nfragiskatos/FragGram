@@ -103,7 +103,7 @@ class AccountSettingsFragment : Fragment() {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             viewModel.updateProfileImageUri(CropImage.getActivityResult(data).uri.toString())
         } else {
-            Log.d("AccountSettingsFragment", "Failed to load cropped image")
+            Log.d(TAG, "Failed to load cropped image")
             Toast.makeText(context, "Failed to load cropped image", Toast.LENGTH_SHORT)
                 .show()
         }
