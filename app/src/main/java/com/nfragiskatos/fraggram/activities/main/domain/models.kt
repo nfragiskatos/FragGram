@@ -16,3 +16,10 @@ data class User(
 ) {
     constructor() : this("", "", "", "", "", "", "", "")
 }
+
+data class Post(
+    val postId: String,
+    val description: String,
+    val publisherId: String,
+    val imageUrl: String
+)
