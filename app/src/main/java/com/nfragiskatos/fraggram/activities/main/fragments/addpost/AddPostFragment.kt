@@ -3,11 +3,16 @@ package com.nfragiskatos.fraggram.activities.main.fragments.addpost
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.nfragiskatos.fraggram.databinding.FragmentAddPostBinding
 import com.theartofdev.edmodo.cropper.CropImage
 
@@ -41,8 +46,49 @@ class AddPostFragment : Fragment() {
             }
         }
 
+        viewModel.notification.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT)
+                .show()
+        })
+
+        viewModel.logMessage.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, it)
+        })
+
+        viewModel.navigateToHomeFragment.observe(viewLifecycleOwner, Observer {navigate ->
+            if (navigate) {
+                findNavController().popBackStack()
+                viewModel.displayHomeFragmentCompleted()
+            }
+        })
+
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                AddPostStatus.LOADING -> {
+                    binding.framelayoutProgressbarHolderAddPost.visibility = View.VISIBLE
+                    setBackgroundEnabled(false)
+                }
+
+                else -> {
+                    binding.framelayoutProgressbarHolderAddPost.visibility = View.INVISIBLE
+                    setBackgroundEnabled(true)
+                }
+            }
+        })
+
 
         return binding.root
+    }
+
+    private fun setBackgroundEnabled(isEnabled: Boolean) {
+        if (isEnabled) {
+            activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            activity?.window?.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
