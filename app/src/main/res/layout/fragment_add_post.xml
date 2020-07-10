@@ -47,6 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="16dp"
+                        android:onClick="@{() -> viewModel.uploadPost()}"
                         android:src="@drawable/ic_baseline_check_48"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +55,29 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/framelayout_progressbar_holder_add_post"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:alpha="0.4"
+            android:animateLayoutChanges="true"
+            android:background="#000000"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressbar_add_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:foregroundGravity="top"
+                android:indeterminate="true"
+                android:max="100" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/imageview_image_post_add_post"
@@ -73,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:text="@={viewModel.postDescription}"
             android:hint="Say something about your post..."
             android:maxLines="6"
             app:layout_constraintTop_toBottomOf="@id/imageview_image_post_add_post"
