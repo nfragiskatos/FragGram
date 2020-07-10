@@ -6,6 +6,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.nfragiskatos.fraggram.activities.main.domain.Post
 import com.nfragiskatos.fraggram.activities.main.domain.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -79,17 +80,37 @@ object FirebaseRepository {
     }
 
     suspend fun updateUserInfo(fullName: String, username: String, bio: String, uri: String) {
-        val uid = Firebase.auth.uid ?: return
-        val reference = Firebase.database.getReference("/users/$uid")
+        withContext(Dispatchers.IO) {
+            val uid = Firebase.auth.uid ?: return@withContext
+            val reference = Firebase.database.getReference("/users/$uid")
 
-        val userMap = HashMap<String, Any>()
-        userMap["fullName_display"] = fullName
-        userMap["fullName_sort"] = fullName.toLowerCase()
-        userMap["username_display"] = username
-        userMap["username_sort"] = username.toLowerCase()
-        userMap["bio"] = bio
-        userMap["profileImageUrl"] = uri
+            val userMap = HashMap<String, Any>()
+            userMap["fullName_display"] = fullName
+            userMap["fullName_sort"] = fullName.toLowerCase()
+            userMap["username_display"] = username
+            userMap["username_sort"] = username.toLowerCase()
+            userMap["bio"] = bio
+            userMap["profileImageUrl"] = uri
 
-        reference.updateChildren(userMap).await()
+            reference.updateChildren(userMap).await()
+        }
+
+    }
+
+    suspend fun saveNewPost(description: String, imageUrl: String) {
+        withContext(Dispatchers.IO) {
+            val uid = Firebase.auth.uid ?: return@withContext
+            val ref = Firebase.database.getReference("/posts/")
+            val postId = ref.push().key
+
+            val post = Post(
+                postId!!,
+                description,
+                uid,
+                imageUrl
+            )
+
+            ref.setValue(post)
+        }
     }
 }
