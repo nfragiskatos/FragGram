@@ -69,9 +69,10 @@ object FirebaseRepository {
         return if (nodePath[nodePath.lastIndex] == '/') nodePath else "$nodePath/"
     }
 
-    suspend fun uploadImageToStorage(uri: String, fileName: String) : Uri? {
+    suspend fun uploadImageToStorage(uri: String, fileName: String, nodePath: String): Uri? {
         return withContext(Dispatchers.IO) {
-            val ref = Firebase.storage.getReference("/images/$fileName")
+            val validatePath = validatePath(nodePath)
+            val ref = Firebase.storage.getReference("$validatePath$fileName")
             ref.putFile(Uri.parse(uri)).await()
             return@withContext ref.downloadUrl.await()
         }

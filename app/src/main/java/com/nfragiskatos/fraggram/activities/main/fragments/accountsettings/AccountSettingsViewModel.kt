@@ -123,7 +123,7 @@ class AccountSettingsViewModel : ViewModel() {
                 val ext = imageUri.substring(imageUri.lastIndexOf(".") + 1)
                 val fileName = "${Firebase.auth.uid}_profile_image.$ext"
 
-                val retUri = FirebaseRepository.uploadImageToStorage(imageUri, fileName)
+                val retUri = FirebaseRepository.uploadImageToStorage(imageUri, fileName, "/images/")
                 retUri?.let {
                     FirebaseRepository.updateUserInfo(fullName, username, bio, it.toString())
                 }
