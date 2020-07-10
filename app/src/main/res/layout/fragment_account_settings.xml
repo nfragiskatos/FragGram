@@ -65,30 +65,29 @@
             android:animateLayoutChanges="true"
             android:background="#000000"
             android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
                 android:id="@+id/progressbar_account_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:foregroundGravity="top"
                 android:layout_gravity="center"
-                android:max="100"
+                android:foregroundGravity="top"
                 android:indeterminate="true"
-                />
+                android:max="100" />
         </FrameLayout>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleimageview_profile_image_account_settings"
+            imageUrl="@{viewModel.photoUri}"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_baseline_person_64"
-            profileUrl="@{viewModel.photoUri}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_bar_layout_account_settings" />
@@ -113,8 +112,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="20dp"
             android:hint="Full Name"
-            android:text="@={viewModel.fullName}"
             android:inputType="text"
+            android:text="@={viewModel.fullName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_change_profile_image_label_account_settings" />
@@ -126,9 +125,9 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="20dp"
-            android:text="@={viewModel.username}"
             android:hint="Username"
             android:inputType="text"
+            android:text="@={viewModel.username}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edittext_full_name_account_settings" />
@@ -141,8 +140,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="20dp"
             android:hint="Bio"
-            android:text="@={viewModel.bio}"
             android:inputType="text"
+            android:text="@={viewModel.bio}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edittext_username_account_settings" />

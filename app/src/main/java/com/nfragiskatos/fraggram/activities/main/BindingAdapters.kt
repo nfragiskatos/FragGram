@@ -16,11 +16,11 @@ fun bindUserSearchRecyclerView(recyclerView: RecyclerView, data: List<User>?) {
     adapter.notifyDataSetChanged()
 }
 
-@BindingAdapter("profileUrl")
-fun bindProfileUrl(profileImageView: ImageView, url: String?) {
+@BindingAdapter("imageUrl")
+fun bindImageUrl(imageView: ImageView, url: String?) {
     url?.let {
         Picasso.get().load(url).placeholder(R.drawable.ic_baseline_person_64)
-            .into(profileImageView)
+            .into(imageView)
     }
 }
 
