@@ -27,7 +27,7 @@ class SignUpViewModel : ViewModel() {
 
     private val _navigateToHomeFragment = MutableLiveData<Boolean>()
     val navigateToHomeFragment: LiveData<Boolean>
-    get() = _navigateToHomeFragment
+        get() = _navigateToHomeFragment
 
     private val _notification = MutableLiveData<String>()
     val notification: LiveData<String>
@@ -90,6 +90,7 @@ class SignUpViewModel : ViewModel() {
                     "https://firebasestorage.googleapis.com/v0/b/fraggram-9d41c.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=be3b8d46-2bdb-48e5-8382-41c3f71995a9"
                 )
                 FirebaseRepository.saveUserInfo(user, "/users/")
+                FirebaseRepository.followMyself()
                 _status.value = SignUpStatus.DONE
                 displayHomeFragment()
             } else {
