@@ -22,4 +22,6 @@ data class Post(
     val description: String,
     val publisherId: String,
     val imageUrl: String
-)
+) {
+    constructor() : this("", "", "", "")
+}
