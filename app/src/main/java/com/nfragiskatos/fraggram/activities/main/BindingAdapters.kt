@@ -5,13 +5,22 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nfragiskatos.fraggram.R
+import com.nfragiskatos.fraggram.activities.main.domain.Post
 import com.nfragiskatos.fraggram.activities.main.domain.User
+import com.nfragiskatos.fraggram.activities.main.fragments.home.HomeListAdapter
 import com.nfragiskatos.fraggram.activities.main.fragments.search.SearchListAdapter
 import com.squareup.picasso.Picasso
 
 @BindingAdapter("userSearchData")
 fun bindUserSearchRecyclerView(recyclerView: RecyclerView, data: List<User>?) {
     val adapter = recyclerView.adapter as SearchListAdapter
+    adapter.submitList(data)
+    adapter.notifyDataSetChanged()
+}
+
+@BindingAdapter("postListData")
+fun bindPostsRecyclerView(recyclerView: RecyclerView, data: List<Post>?) {
+    val adapter = recyclerView.adapter as HomeListAdapter
     adapter.submitList(data)
     adapter.notifyDataSetChanged()
 }
