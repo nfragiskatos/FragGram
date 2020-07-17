@@ -51,6 +51,18 @@ object FirebaseRepository {
         }
     }
 
+    suspend fun followMyself() {
+        withContext(Dispatchers.IO) {
+            val uid = Firebase.auth.uid
+            uid?.let {
+                val followingRef =
+                    Firebase.database.getReference("follow/$uid/following/$uid")
+                        .push()
+                followingRef.setValue(true).await()
+            }
+        }
+    }
+
     suspend fun unFollowUser(userToFollowUid: String) {
         withContext(Dispatchers.IO) {
             val uid = Firebase.auth.uid
@@ -109,8 +121,7 @@ object FirebaseRepository {
                 uid,
                 imageUrl
             )
-
-            ref.setValue(post)
+            ref.child(postId).setValue(post)
         }
     }
 }
